@@ -1,0 +1,130 @@
+---
+title: "Web Crawling in R"
+author: "SKY/VAM"
+date: "31 January 2019"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: true
+      tocdepth: 3
+---
+
+## Scope of the study
+In today's world, it is easy to find any kind of data from internet resources.The biggest challenge we face is in accessing it. Here, we aim to gain an overall idea on webscrapping using R.
+
+## Inspiration
+Last november, we had tried to extend the IAZI models on Indian data, particularly offeredPrice.IN. And among all the issues we faced, the most tedious and time consuming was the data collection part. 
+
+We had to manually search each object available online and then enter the values to the data tables. This tiring task made us to think of better/smarter alternatves by which we could extract data from the available online platforms and we also wanted to try it out in R.
+
+## Pre requisites
+* *`rvest`* package - Extracts information directly from webpages.
+* *`Rcrawler`* package - Crawls and extracts information from web pages.
+* SelectorGadeget - Extracts CSS (Cascading Style Sheets) patterns from the  webpages. We've used the chrome extension of selectorGadget.
+
+## Website used
+`https://www.cardekho.com/` 
+  - One of India's leading autoportal for cars.
+  
+## *`rvest`* 
+
+### Basic usage
+```{r, echo=TRUE, warning=FALSE,message=FALSE}
+# initialisation
+library(rvest)
+library(tidyverse)
+
+# url
+urlcardekho <- 'https://www.cardekho.com/used-cars+in+bangalore'
+```
+
+### Example 1 : Single column
+```{r, echo=TRUE, warning=FALSE,message=FALSE}
+model <- html_session(urlcardekho) %>%
+    html_nodes('.title a') %>% 
+    html_text() %>%  
+    str_replace_all( "[\r\n\t\\s\\/]" , "")
+head(model)
+```
+
+### Example 2 : Multilpe columns
+```{r, echo=TRUE, warning=FALSE,message=FALSE}
+# function to scrap a column
+scrapeCol <- function(Xpath, urlsite){
+  dat <- html_session(urlsite) %>%
+    html_nodes(Xpath) %>% 
+    html_text() %>%  
+    str_replace_all( "[\r\n\t\\s\\/]" , "")
+}
+
+# getting information from the webpage
+cssPat <- c(model = '.title a', price = '.price', 
+            drivenKm = '.dotlist span:nth-child(1)', fuel = '.dotlist span:nth-child(2)')
+carData <- as.data.frame(lapply(cssPat, scrapeCol, urlcardekho)) 
+carData %>% head(5) 
+```
+
+## *`RCrawler`*
+RCrawler is an R-based web crawler that can crawl and scrape web page content (articles, titles, and metadata) in an automated manner to produce a structured dataset.By providing only the website URL and the Xpath or CSS selector patterns, `Rcrawler{RCrawler}` can crawl the whole website (traverse all web pages), download webpages, and scrape/extract its contents in an automated manner to produce a structured dataset.
+
+
+<br> _Note: The process of a crawling operation is performed by several concurrent processes in parallel, so it's recommended to use 64bit version of R._
+
+### Basic Usage
+```{r, echo=TRUE, eval=FALSE, warning=FALSE,message=FALSE}
+# library
+library(Rcrawler)
+
+# preparing CSS config table
+(configCSS <- read.table(textConnection("
+CSSPattern;PatternNames
+.price;price
+.dotlist span~ span+ span;place
+.dotlist span:nth-child(1);kmDriven
+.dotlist span:nth-child(2);fuel
+.title a;modelInfo"), sep = ';', header = T, stringsAsFactors = F))
+
+
+# crawling a website
+Rcrawler(Website = "https://www.cardekho.com/" , 
+         no_cores = 4, 
+         MaxDepth = 2, 
+         crawlUrlfilter = 'used-cars',
+         ExtractCSSPat = configCSS$CSSPattern,
+         PatternsNames = configCSS$ColNames)
+```
+
+```{r, echo=FALSE, warning=FALSE,message=FALSE}
+#load(file = 'E:/VAM/Jan 2019 presentation/dataCrawlingInR/carDekho.RData')
+load(file = 'E:/SKY/PPT/WebCrawling_R/carDekho.RData')
+configCSS
+```
+### `Rcrawler{RCrawler}` output
+The output of Rcrawler() is as follows:
+
+* **Repository**: Rcrawler saves the following to the working directory by default. We also have the provision to change the default directory to any desired one using the `DIR` parameterin Rcrawler().
+   - Crawled webpages: Named as per the id column in `INDEX`
+   - extracted_data.csv: csv file holding all extracted data.
+
+* **`INDEX`**: A data frame in global environment representing the generic URL index.
+    - fetched URLs
+    - content type
+    - encoding type
+    - HTTP resp:codes indicate whether a specific HTTP request has been successfully completed(200 - ok).
+    - number of inlinks:links from other pages that point to that page.
+    - number of outlinks:number of links extracted and filtered from that page. 
+    - level: it represents the distance between the root document and all extracted links.
+
+* **`DATA`**: A list of lists in global environement holding scraped contents.
+
+## Further scope
+
+
+
+
+
+
+
+
+ 
