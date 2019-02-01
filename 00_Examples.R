@@ -85,8 +85,6 @@ library(Rcrawler)
 
 Rcrawler(Website = "https://www.cardekho.com/used-car-details/" , 
          no_cores = 4, 
-         no_conn = 4,
-         MaxDepth = 3, 
          crawlUrlfilter = 'used-car-details',
          ExtractCSSPat = c(".priceheader", 
                            ".icon-cd-year+ .iconDetail", 
