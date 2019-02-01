@@ -243,7 +243,7 @@ div.tocify {
 </div>
 <div id="website-used" class="section level2">
 <h2>Website used</h2>
-<p><code>https://www.cardekho.com/</code> - One of India’s leading autoportal for cars.</p>
+<p><a href="https://www.cardekho.com/" class="uri">https://www.cardekho.com/</a> - One of India’s leading autoportal for cars.</p>
 </div>
 <div id="rvest" class="section level2">
 <h2><em><code>rvest</code></em></h2>
@@ -263,12 +263,12 @@ urlcardekho &lt;- 'https://www.cardekho.com/used-cars+in+bangalore'</code></pre>
     html_text() %&gt;%  
     str_replace_all( &quot;[\r\n\t\\s\\/]&quot; , &quot;&quot;)
 head(model)</code></pre>
-<pre><code>## [1] &quot;2015Mercedes-BenzM-ClassML3504Matic&quot;         
+<pre><code>## [1] &quot;2014HyundaiGrandi10AstaOption&quot;               
 ## [2] &quot;2017AudiA435TDITechnology&quot;                   
 ## [3] &quot;2016MarutiSwiftVDIBSIV&quot;                      
 ## [4] &quot;2008Mercedes-BenzNewC-ClassC220CDIAvantgarde&quot;
 ## [5] &quot;2017RenaultKWIDClimber1.0AMT&quot;                
-## [6] &quot;2011BMW5Series530dHighlineSedan&quot;</code></pre>
+## [6] &quot;2017HyundaiVernaVTVT1.6SXOption&quot;</code></pre>
 </div>
 <div id="example-2-multilpe-columns" class="section level3">
 <h3>Example 2 : Multilpe columns</h3>
@@ -286,7 +286,7 @@ cssPat &lt;- c(model = '.title a', price = '.price',
 carData &lt;- as.data.frame(lapply(cssPat, scrapeCol, urlcardekho)) 
 carData %&gt;% head(5) </code></pre>
 <pre><code>##                                          model       price drivenKm   fuel
-## 1          2015Mercedes-BenzM-ClassML3504Matic Rs.48.5Lakh 20,000km Diesel
+## 1                2014HyundaiGrandi10AstaOption  Rs.4.8Lakh 54,000km Petrol
 ## 2                    2017AudiA435TDITechnology   Rs.38Lakh 14,000km Diesel
 ## 3                       2016MarutiSwiftVDIBSIV Rs.6.35Lakh 35,000km Diesel
 ## 4 2008Mercedes-BenzNewC-ClassC220CDIAvantgarde   Rs.13Lakh 39,500km Diesel

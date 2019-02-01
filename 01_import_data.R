@@ -4,20 +4,26 @@ library(Rcrawler)
 # preparing CSS config table
 configCSS <- read.table(textConnection("
 CSSPattern;PatternNames
-.price;price
-.dotlist span~ span+ span;place
-.dotlist span:nth-child(1);kmDriven
-.dotlist span:nth-child(2);fuel
-.title a;modelInfo"), sep = ';', header = T, stringsAsFactors = F)
+.priceheader;price
+.icon-cd-year+ .iconDetail;year
+.kmDrive+ .iconDetail;kmDriven
+.fuelType+ .iconDetail;fuel
+.sellerType+ .iconDetail;seller
+.icon-cd-Transmission+ .iconDetail;transmission
+.ownerFirst+ .iconDetail;owner
+.milage+ .iconDetail;milage
+.engine+ .iconDetail;engine
+.seats+ .iconDetail;seatNb
+.borderBottom:nth-child(1) .on;info"), sep = ';', header = T, stringsAsFactors = F)
 
 
 # crawling a website
 Rcrawler(Website = "https://www.cardekho.com/" , 
          no_cores = 4, 
-         MaxDepth = 2, 
-         crawlUrlfilter = 'used-cars',
+         crawlUrlfilter = 'used-car-details',
          ExtractCSSPat = configCSS$CSSPattern,
-         PatternsNames = configCSS$ColNames)
+         PatternsNames = configCSS$PatternNames)
+
 
 # converting the crawled list of informations to a dataframe
 df <- data.frame(do.call("rbind", DATA))
@@ -25,12 +31,9 @@ df <- data.frame(do.call("rbind", DATA))
 
 # saving
 save(configCSS, DATA, INDEX, df, 
-     file = 'E:/VAM/Jan 2019 presentation/dataCrawlingInR/carDekho.RData')
+     file = 'E:/SKY/PPT/RWebCrawling/carDekho.RData')
 
 # load(file = 'E:/VAM/Jan 2019 presentation/dataCrawlingInR/carDekho.RData', verbose = T)
-
-
-
 
 
 
