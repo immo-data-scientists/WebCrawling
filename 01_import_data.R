@@ -18,7 +18,7 @@ CSSPattern;PatternNames
 
 
 # crawling a website
-Rcrawler(Website = "https://www.cardekho.com/" , 
+Rcrawler(Website = "https://www.cardekho.com/used-car-details/" , 
          no_cores = 4, 
          crawlUrlfilter = 'used-car-details',
          ExtractCSSPat = configCSS$CSSPattern,
@@ -31,12 +31,11 @@ df <- data.frame(do.call("rbind", DATA))
 
 # saving
 save(configCSS, DATA, INDEX, df, 
-     file = 'E:/SKY/PPT/RWebCrawling/carDekho.RData')
-
+     file = 'E:/My_Project_Crawling/RWebCrawling/carDekho.RData')
 # load(file = 'E:/VAM/Jan 2019 presentation/dataCrawlingInR/carDekho.RData', verbose = T)
 
 
-
+load(file = 'E:/MY_Project_Crawling/RWebCrawling/carDekho.RData')
 
 
 
