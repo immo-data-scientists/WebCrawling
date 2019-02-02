@@ -1,7 +1,7 @@
 ---
 title: "Web Crawling in R"
 author: "SKY/VAM"
-date: "31 January 2019"
+date: "04 February 2019"
 output:
   html_document:
     toc: true
@@ -10,13 +10,15 @@ output:
       tocdepth: 3
 ---
 
+```{r, echo=FALSE, warning=FALSE,message=FALSE}
+load(file = 'E:/MY_Project_Crawling/RWebCrawling/carDekho.RData')
+```
+
 ## Scope of the study
 In today's world, it is easy to find any kind of data from internet resources.The biggest challenge we face is in accessing it. Here, we aim to gain an overall idea on webscrapping using R.
 
 ## Inspiration
-Last november, we had tried to extend the IAZI models on Indian data, particularly offeredPrice.IN. And among all the issues we faced, the most tedious and time consuming was the data collection part. 
-
-We had to manually search each object available online and then enter the values to the data tables. This tiring task made us to think of better/smarter alternatves by which we could extract data from the available online platforms and we also wanted to try it out in R.
+Recent manual work of data collection which was very tedious motivated to explore a bit in this area. Also this will help to obtain offered data from online sources in a much faster way.
 
 ## Pre requisites
 * *`rvest`* package - Extracts information directly from webpages.
@@ -45,6 +47,7 @@ model <- html_session(urlcardekho) %>%
     html_nodes('.title a') %>% 
     html_text() %>%  
     str_replace_all( "[\r\n\t\\s\\/]" , "")
+
 head(model)
 ```
 
@@ -59,17 +62,17 @@ scrapeCol <- function(Xpath, urlsite){
 }
 
 # getting information from the webpage
-cssPat <- c(model = '.title a', price = '.price', 
-            drivenKm = '.dotlist span:nth-child(1)', fuel = '.dotlist span:nth-child(2)')
+cssPat <- c(model = '.title a', 
+            price = '.price', 
+            drivenKm = '.dotlist span:nth-child(1)', 
+            fuel = '.dotlist span:nth-child(2)')
+
 carData <- as.data.frame(lapply(cssPat, scrapeCol, urlcardekho))
-DT:::datatable(carData, rownames = FALSE, 
+
+DT:::datatable(carData, 
+               rownames = FALSE,
                options = list(dom = 't'))
 ```
-
-```{r, echo=FALSE, warning=FALSE,message=FALSE}
-load(file = 'E:/MY_Project_Crawling/RWebCrawling/carDekho.RData')
-```
-
 
 ## *`RCrawler`*
 RCrawler is an R-based web crawler that can crawl and scrape web page content (articles, titles, and metadata) in an automated manner to produce a structured dataset.By providing only the website URL and the Xpath or CSS selector patterns, `Rcrawler{RCrawler}` can crawl the whole website (traverse all web pages), download webpages, and scrape/extract its contents in an automated manner to produce a structured dataset.
@@ -135,7 +138,7 @@ The output of Rcrawler() is as follows:
 * **`DATA`**: A list of lists in global environement holding scraped contents.
 
 ## Further scope
-
+1. There are a lot of functions in crawler package which are yet to be explored.
 
 
 
