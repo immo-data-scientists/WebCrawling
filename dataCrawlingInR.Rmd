@@ -61,9 +61,15 @@ scrapeCol <- function(Xpath, urlsite){
 # getting information from the webpage
 cssPat <- c(model = '.title a', price = '.price', 
             drivenKm = '.dotlist span:nth-child(1)', fuel = '.dotlist span:nth-child(2)')
-carData <- as.data.frame(lapply(cssPat, scrapeCol, urlcardekho)) 
-carData %>% head(5) 
+carData <- as.data.frame(lapply(cssPat, scrapeCol, urlcardekho))
+DT:::datatable(carData, rownames = FALSE, 
+               options = list(dom = 't'))
 ```
+
+```{r, echo=FALSE, warning=FALSE,message=FALSE}
+load(file = 'E:/MY_Project_Crawling/RWebCrawling/carDekho.RData')
+```
+
 
 ## *`RCrawler`*
 RCrawler is an R-based web crawler that can crawl and scrape web page content (articles, titles, and metadata) in an automated manner to produce a structured dataset.By providing only the website URL and the Xpath or CSS selector patterns, `Rcrawler{RCrawler}` can crawl the whole website (traverse all web pages), download webpages, and scrape/extract its contents in an automated manner to produce a structured dataset.
@@ -72,9 +78,7 @@ RCrawler is an R-based web crawler that can crawl and scrape web page content (a
 <br> _Note: The process of a crawling operation is performed by several concurrent processes in parallel, so it's recommended to use 64bit version of R._
 
 ### Basic Usage
-```{r, echo=TRUE, eval=FALSE, warning=FALSE,message=FALSE}
-# library
-library(Rcrawler)
+```{r, echo=TRUE, eval = FALSE, warning=FALSE,message=FALSE}
 
 # preparing CSS config table
 configCSS <- read.table(textConnection("
@@ -91,6 +95,18 @@ CSSPattern;PatternNames
 .seats+ .iconDetail;seatNb
 .borderBottom:nth-child(1) .on;info"), sep = ';', header = T, stringsAsFactors = F)
 
+```
+
+```{r, echo=FALSE, warning=FALSE,message=FALSE}
+DT:::datatable(configCSS, rownames = FALSE, 
+               options = list(dom = 't'))
+```
+
+
+```{r, echo=TRUE, eval=FALSE, warning=FALSE,message=FALSE}
+# library
+library(Rcrawler)
+
 # crawling a website
 Rcrawler(Website = "https://www.cardekho.com/" , 
          no_cores = 4, 
@@ -99,11 +115,7 @@ Rcrawler(Website = "https://www.cardekho.com/" ,
          PatternsNames = configCSS$PatternNames)
 ```
 
-```{r, echo=FALSE, warning=FALSE,message=FALSE}
-#load(file = 'E:/VAM/Jan 2019 presentation/dataCrawlingInR/carDekho.RData')
-load(file = 'E:/SKY/PPT/WebCrawling_R/carDekho.RData')
-configCSS
-```
+
 ### `Rcrawler{RCrawler}` output
 The output of Rcrawler() is as follows:
 
