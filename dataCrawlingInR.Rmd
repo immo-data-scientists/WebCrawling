@@ -11,7 +11,8 @@ output:
 ---
 
 ```{r, echo=FALSE, warning=FALSE,message=FALSE}
-load(file = 'E:/MY_Project_Crawling/RWebCrawling/carDekho.RData')
+# load(file = 'E:/MY_Project_Crawling/RWebCrawling/carDekho.RData')
+load("D:/R studio/New folder/RWebCrawling/carDekho.RData")
 ```
 
 ## Scope of the study
@@ -40,6 +41,8 @@ library(tidyverse)
 # url
 urlcardekho <- 'https://www.cardekho.com/used-cars+in+bangalore'
 ```
+
+https://www.cardekho.com/used-cars+in+bangalore
 
 ### Example 1 : Single column
 ```{r, echo=TRUE, warning=FALSE,message=FALSE}
