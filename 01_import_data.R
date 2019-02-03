@@ -4,6 +4,7 @@ library(Rcrawler)
 # preparing CSS config table
 configCSS <- read.table(textConnection("
 CSSPattern;PatternNames
+h1;title
 .priceheader;price
 .icon-cd-year+ .iconDetail;year
 .kmDrive+ .iconDetail;kmDriven
@@ -31,9 +32,8 @@ df <- data.frame(do.call("rbind", DATA))
 
 # saving
 save(configCSS, DATA, INDEX, df, 
-     file = 'E:/My_Project_Crawling/RWebCrawling/carDekho.RData')
+     file = 'D:/R studio/New folder/RWebCrawling/carDekho.RData')
 # load(file = 'E:/VAM/Jan 2019 presentation/dataCrawlingInR/carDekho.RData', verbose = T)
-
 
 load(file = 'E:/MY_Project_Crawling/RWebCrawling/carDekho.RData')
 
