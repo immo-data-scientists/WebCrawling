@@ -51,8 +51,16 @@ model <- html_session(urlcardekho) %>%
     html_text() %>%  
     str_replace_all( "[\r\n\t\\s\\/]" , "")
 
-head(model)
 ```
+
+```{r echo=FALSE, warning=FALSE,message=FALSE}
+model <- model %>% data.frame()
+colnames(model) <- "model"
+DT:::datatable(model,
+               rownames = FALSE,
+               options = list(dom = 't'))
+```
+
 
 ### Example 2 : Multilpe columns
 ```{r, echo=TRUE, warning=FALSE,message=FALSE}
@@ -72,10 +80,14 @@ cssPat <- c(model = '.title a',
 
 carData <- as.data.frame(lapply(cssPat, scrapeCol, urlcardekho))
 
+```
+
+```{r, echo=FALSE, warning=FALSE,message=FALSE}
 DT:::datatable(carData, 
                rownames = FALSE,
                options = list(dom = 't'))
 ```
+
 
 ## *`RCrawler`*
 RCrawler is an R-based web crawler that can crawl and scrape web page content (articles, titles, and metadata) in an automated manner to produce a structured dataset.By providing only the website URL and the Xpath or CSS selector patterns, `Rcrawler{RCrawler}` can crawl the whole website (traverse all web pages), download webpages, and scrape/extract its contents in an automated manner to produce a structured dataset.
@@ -89,6 +101,7 @@ RCrawler is an R-based web crawler that can crawl and scrape web page content (a
 # preparing CSS config table
 configCSS <- read.table(textConnection("
 CSSPattern;PatternNames
+h1;title
 .priceheader;price
 .icon-cd-year+ .iconDetail;year
 .kmDrive+ .iconDetail;kmDriven
@@ -139,6 +152,13 @@ The output of Rcrawler() is as follows:
     - level: it represents the distance between the root document and all extracted links.
 
 * **`DATA`**: A list of lists in global environement holding scraped contents.
+
+```{r, echo=FALSE, warning=FALSE,message=FALSE}
+tail(df,10) %>% 
+  select(-info) %>% 
+  DT:::datatable(rownames = FALSE,
+                 options = list(dom = 't'))
+```
 
 ## Further scope
 1. There are a lot of functions in crawler package which are yet to be explored.
